@@ -6,7 +6,7 @@ import { StorageManagementService } from '../services/storage-management.service
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss']
+  styleUrls: ['tab1.page.scss'],
 })
 export class Tab1Page {
   form: any = {};
@@ -14,20 +14,29 @@ export class Tab1Page {
     private geoLocationService: GeoLocationService,
     private toastController: ToastController,
     private storageManagementService: StorageManagementService
-  ) { }
+  ) {}
 
   inputCheck() {
     if (
-      !this.form.nik || !this.form.nama || !this.form.tempat_lahir ||
-      !this.form.tanggal_lahir || !this.form.jenis_kelamin || !this.form.alamat ||
-      !this.form.agama || !this.form.status_perkawinan || !this.form.pekerjaan ||
-      !this.form.kewarganegaraan || !this.form.berlaku_hingga
+      !this.form.nik ||
+      !this.form.nama ||
+      !this.form.tempat_lahir ||
+      !this.form.tanggal_lahir ||
+      !this.form.jenis_kelamin ||
+      !this.form.alamat ||
+      !this.form.agama ||
+      !this.form.status_perkawinan ||
+      !this.form.pekerjaan ||
+      !this.form.kewarganegaraan ||
+      !this.form.berlaku_hingga
     ) {
-      this.toastController.create({
-        message: 'Mohon lengkapi data',
-        duration: 2000,
-        color: 'danger'
-      }).then(toast => toast.present());
+      this.toastController
+        .create({
+          message: 'Mohon lengkapi data',
+          duration: 2000,
+          color: 'danger',
+        })
+        .then((toast) => toast.present());
 
       return false;
     }
@@ -43,12 +52,17 @@ export class Tab1Page {
     this.form.type = 'whatsapp';
 
     const form = Object.keys(this.form);
-    const output = form.map((key) => {
-      if (key === 'location') return;
-      return `*${key.toUpperCase()}*: ${this.form[key]}`;
-    }).join('%0A');
+    const output = form
+      .map((key) => {
+        if (key === 'location') return;
+        return `*${key.toUpperCase()}*: ${this.form[key]}`;
+      })
+      .join('%0A');
 
-    window.open(`https://api.whatsapp.com/send?phone=6285156024790&text=${output}`, '_blank');
+    window.open(
+      `https://api.whatsapp.com/send?phone=6285718142052&text=${output}`,
+      '_blank'
+    );
 
     // save data to storage
     this.storageManagementService.addData(this.form);
@@ -62,14 +76,14 @@ export class Tab1Page {
     this.form.lokasi = location.display_name;
     this.form.type = 'telegram';
 
-
     const form = Object.keys(this.form);
-    const output = form.map((key) => {
-      return `*${key.toUpperCase()}*: ${this.form[key]}`;
-    }).join('%0A');
+    const output = form
+      .map((key) => {
+        return `*${key.toUpperCase()}*: ${this.form[key]}`;
+      })
+      .join('%0A');
 
-
-    window.open(`https://t.me/Katoww_Bot?start=${output}`, '_blank');
+    window.open(`https://t.me/+qMNoRKM_-D01MDY1?start=${output}`, '_blank');
   }
 
   async sendToEmail() {
@@ -82,13 +96,15 @@ export class Tab1Page {
     this.form.type = 'email';
 
     const form = Object.keys(this.form);
-    const output = form.map((key) => {
-      // bold text on mailto: body
-      if (key === 'location') return;
-      return `${key.toUpperCase()}: ${this.form[key]}`;
-    }).join('%0A');
+    const output = form
+      .map((key) => {
+        // bold text on mailto: body
+        if (key === 'location') return;
+        return `${key.toUpperCase()}: ${this.form[key]}`;
+      })
+      .join('%0A');
 
-    const url = `mailto:naufalfaqih443@gmail.com?subject=Data&20Informasi&body=${output}`;
+    const url = `mailto:mochamadrayhanb@gmail.com?subject=Data&20Informasi&body=${output}`;
 
     window.open(url, '_blank');
 
@@ -101,7 +117,9 @@ export class Tab1Page {
     const { latitude, longitude, accuracy } = positition.coords;
 
     // get address
-    const getAddress = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`);
+    const getAddress = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+    );
     const address = await getAddress.json();
 
     return address;
